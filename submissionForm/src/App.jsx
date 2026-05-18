@@ -1,3 +1,4 @@
+import "./App.css"
 import {useState , useRef} from "react"
 
 const INITIAL_STATE = {
@@ -21,24 +22,49 @@ function App() {
   const [resume , setResume] = useState(null)
   const fileInputRef = useRef(null)
 
-  console.log(fileInputRef)
   
   const handleChange = (e) => {
     const {name , value} = e.target
-    setFormData((prev) =>
-      ({
+
+    setFormData((prev) => ({
       ...prev,
-      [name] : value
+      [name] : value,
     }))
   }
 
-  const handleSubjectChange = (subjectName) => {}
+  const handleSubjectChange = (subjectName) => {
+    setFormData((prev) => ({
+      ...prev,
+      subjects : {
+        ...prev.subjects,
+        [subjectName] : !prev.subjects[subjectName]
+      }
+    }))
+  }
 
-  const handleFileChange = () => {}
+  const handleFileChange = (e) => {
+    setResume(e.target.files[0] || null)
+  };
 
-  const handleSubmit = () => {}
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleReset = () => {} 
+    const submissionData = {
+      ...formData,
+      resume,
+    };
+
+    console.log("Submitting Form Data:", submissionData);
+  }
+
+  const handleReset = () => {
+    setFormData(INITIAL_STATE)
+    setResume(null)
+    console.log(fileInputRef)
+    if(fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  } 
 
   return(
     <div className="App">
